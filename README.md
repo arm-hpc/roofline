@@ -134,10 +134,9 @@ A suggested way to be able to see the actual plot is to use [Okular](https://oku
 
 * Unfortunately the tool, when instrumenting the target application for gathering the FLOP and Bytes piece of information, significantly slows down the application running, resulting in an increased execution time.
 This problem can actually be solved by improving the insturmentation client by finding a way of avoiding 'clean calls' and cleaning the code cache as soon as a region of interest starting demarker is met at runtime.
-If you have time/resources for improving the tool and want to know more about this, please let me know by sending an email to: andrea.brunato@arm.com
+If you have time/resources for improving the tool and want to know more about this, please let us know by raising an issue on the project.
 
-* The assumption, for this beta version, is the target application to be single-threaded. The Dynamorio client already features to trace , but this has to be finalized and tested properly.
-Please let me know if you plan to run this tool in a multi-threaded setting and what you would expect the tool to do for you in that scenario - send an email: andrea.brunato@arm.com
+* The assumption, for this beta version, is the target application to be single-threaded. The Dynamorio client already features to trace multi-threaded applications, but this has to be finalized and tested properly.
 
 * The tool has been designed to support Arm and x86_64. While it's able to precisely count the number of floating point operationsn which will actually be executed in the CPU, precise counting has been implemented only of normal floating point operations and NEON vector instructions.
 For other Arm FP instructions extensions and x86_64 please check out `client/count_fp.hpp` and make sure the tool is counting correctly. Also in the same file some improvement needs to be done in order to be able to better spot SIMD instructions.
