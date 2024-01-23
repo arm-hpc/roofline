@@ -6,6 +6,7 @@
 #include"dr_api.h"
 #include"droption.h"
 
+using ::dynamorio::droption::droption_t;
 
 extern droption_t<bool> time_run;
 

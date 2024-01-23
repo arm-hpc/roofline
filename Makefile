@@ -1,16 +1,16 @@
 .PHONY: all dynamorio client clean dependencies
 
-EXECUTABLES = git cmake gnuplot g++ python
+EXECUTABLES = git cmake gnuplot g++ python3
 K := $(foreach exec,$(EXECUTABLES),\
         $(if $(shell which $(exec)),ok,$(error "No $(exec) in PATH")))
 
-all: dependencies dynamorio client
+all: dependencies dynamorio/build/bin64/drrun client
 
 dependencies: ert
 
-dynamorio:
+dynamorio/build/bin64/drrun:
 	git clone https://github.com/DynamoRIO/dynamorio.git
-	cd dynamorio; mkdir build; cd build; cmake ..; make -j
+	cd dynamorio; git submodule init; git submodule update; mkdir build; cd build; cmake ..; make -j
 
 ert:
 	git clone https://bitbucket.org/berkeleylab/cs-roofline-toolkit ert

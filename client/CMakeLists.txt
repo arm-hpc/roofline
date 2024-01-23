@@ -1,6 +1,7 @@
 ## Andrea Brunato andrea.brunato@arm.com
 ## Make it easily defined by the user
 
+project(roofline)
 cmake_minimum_required(VERSION 2.8)
 
 set (CMAKE_CXX_FLAGS "-Wall -Werror=implicit-function-declaration")
