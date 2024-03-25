@@ -55,6 +55,12 @@
 #include "drsyms.h"
 #include "droption.h"
 
+using ::dynamorio::droption::droption_parser_t;
+using ::dynamorio::droption::DROPTION_SCOPE_ALL;
+using ::dynamorio::droption::DROPTION_SCOPE_FRONTEND;
+using ::dynamorio::droption::DROPTION_SCOPE_CLIENT;
+using ::dynamorio::droption::droption_t;
+
 
 static client_id_t client_id;
 
@@ -71,8 +77,8 @@ static int roi_end_detected = 0;
 
 typedef struct{
 	std::string f_name;
-	void (*f_pre)(void* wrapcxt, OUT void **user_data);
-	void (*f_post)(void* wrapcxt, OUT void *user_data);
+	void (*f_pre)(void* wrapcxt, DR_PARAM_OUT void **user_data);
+	void (*f_post)(void* wrapcxt, DR_PARAM_OUT void *user_data);
 } wrap_callback_t;
 
 
@@ -198,7 +204,7 @@ static std::string get_src_file_name(void *wrapcxt, droption_t<std::string> user
 }
 
 
-static void event_roi_init(void *wrapcxt, OUT void**user_data){
+static void event_roi_init(void *wrapcxt, DR_PARAM_OUT void**user_data){
 #ifdef VALIDATE
 	dr_printf(">> ROI Start <<\n");
 #endif
@@ -237,7 +243,7 @@ static void event_roi_init(void *wrapcxt, OUT void**user_data){
 
 
 // This function is almost equivalent to event_roi_end but it's wrapped in a post function execution scenario
-static void symbol_roi_end(void *wrapcxt, OUT void *user_data){
+static void symbol_roi_end(void *wrapcxt, DR_PARAM_OUT void *user_data){
 
 #ifdef VALIDATE
 	dr_printf(">> Symbol ROI End <<\n");
@@ -271,7 +277,7 @@ static void symbol_roi_end(void *wrapcxt, OUT void *user_data){
 
 
 
-static void event_roi_end(void *wrapcxt, OUT void **user_data){
+static void event_roi_end(void *wrapcxt, DR_PARAM_OUT void **user_data){
 
 #ifdef VALIDATE
 	dr_printf(">> ROI End <<\n");

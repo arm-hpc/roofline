@@ -11,6 +11,17 @@ For background on this tool, please read:
 
 The tool outputs a roofline plot for your application.
 
+## Building
+
+Before you build, you must have certain dependencies installed.  On ubuntu you can obtain these with the following:
+```
+% sudo apt-get update && sudo apt-get install cmake g++ doxygen git zlib1g-dev libunwind-dev libsnappy-dev liblz4-dev gnuplot
+```
+
+By default, the Makefile will download and build Dynamo RIO for you.  If you would rather work from your own Dynamo RIO directory,
+it is important you set the environment variable _DYNAMORIO_DIR_ to the path to the Dynamo RIO directory.  If the build directory
+isn't in _DYNAMORIO_DIR_/build then you will also have to set _DYNAMORIO_BUILD_DIR_.
+
 
 ## Remark (Important!)
 
@@ -22,23 +33,8 @@ Please take into account that this tool is provided as a proof of conccept, with
 The roofline tool is structured similarly to the well-known "perf" tool, with "record" and "report" phases:
 if you are familiar with perf, you already know how to use this tool!
 
-## Quick Setup
-After having installed the tool (please check out the INSTALL.md file in this folder) it is suggested to set up an alias in your shell, for instance in your .bashrc file:
-
-`alias roofline='path/to/roofline/directory/roofline.py'`
 
 
-## ERT Interface
-
-Roofline uses the open source ERT (Empirical Roofline Tool) project to gain information about the target machine peak floating point and memory bandwidth. 
-
-In order to ask ERT to run an the given machine using the specified Floating Point precision:
-
-`roofline record_ert --precision [FP64/FP32]`
-
-To see instead which roofline-like lines ERT has already gathered:
-
-`roofline show_ert`
 
 
 
