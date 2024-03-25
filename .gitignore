@@ -1,2 +1,4 @@
 .devcontainer
 .github
+dynamorio
+client/build

@@ -1,22 +1,27 @@
-.PHONY: all dynamorio client clean dependencies
+DYNAMORIO_DIR ?= $(PWD)/dynamorio
+DYNAMORIO_BUILD_DIR ?= $(DYNAMORIO_DIR)/build
+.PHONY: all dynamorio client clean dependencies depends
 
-EXECUTABLES = git cmake gnuplot g++ python3
+EXECUTABLES = git cmake g++ python3
 K := $(foreach exec,$(EXECUTABLES),\
         $(if $(shell which $(exec)),ok,$(error "No $(exec) in PATH")))
 
-all: dependencies dynamorio/build/bin64/drrun client
+all: $(DYNAMORIO_BUILD_DIR)/bin64/drrun client
 
-dependencies: ert
+depends:
+	sudo apt-get update && sudo apt-get install cmake g++ doxygen git zlib1g-dev libunwind-dev libsnappy-dev liblz4-dev
 
-dynamorio/build/bin64/drrun:
-	git clone https://github.com/DynamoRIO/dynamorio.git
-	cd dynamorio; git submodule init; git submodule update; mkdir build; cd build; cmake ..; make -j
+$(DYNAMORIO_DIR):
+	git clone -b sve_categories git@github.com:ericvh/dynamorio.git $(DYNAMORIO_DIR);cd $(DYNAMORIO_DIR);git submodule init; git submodule update
 
-ert:
-	git clone https://bitbucket.org/berkeleylab/cs-roofline-toolkit ert
+$(DYNAMORIO_BUILD_DIR): $(DYNAMORIO_DIR)
+	mkdir $(DYNAMORIO_BUILD_DIR)
+
+$(DYNAMORIO_BUILD_DIR)/bin64/drrun: $(DYNAMORIO_BUILD_DIR)
+	cd $(DYNAMORIO_BUILD_DIR); cmake ..; make -j
 
 client:
-	cd client; mkdir build; cd build; cmake ..; make -j
+	cd client; mkdir -p build; cd build; cmake --trace -DDynamoRIO_DIR=$(DYNAMORIO_BUILD_DIR)/cmake ..; make -j
 
 clean:
 	rm -rf dynamorio
